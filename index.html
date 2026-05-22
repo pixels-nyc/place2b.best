@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loopplay - YouTube Looper for TV</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Google Fonts: Inter & Outfit for premium look -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-active">
+  <!-- Background Glows for Premium Aesthetic -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo-section">
+        <span class="logo-icon">🔁</span>
+        <h1 class="logo-text">Loop<span>Play</span></h1>
+        <span class="badge">TV Edition</span>
+      </div>
+      <div id="status-bar" class="status-bar">
+        <span class="status-dot"></span>
+        <span class="status-text">Ready</span>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-layout">
+      
+      <!-- Left Side: Dashboard controls and collections -->
+      <section class="dashboard-panel">
+        
+        <!-- URL Input Section -->
+        <div class="card search-card">
+          <h2>Play Video</h2>
+          <form id="play-form" class="search-form" onsubmit="return false;">
+            <input 
+              type="text" 
+              id="video-url" 
+              placeholder="Paste YouTube Link or Video ID..." 
+              autocomplete="off" 
+              tabindex="1"
+            >
+            <button type="submit" id="btn-play-submit" class="btn btn-primary" tabindex="2">
+              <span class="btn-icon">▶</span> Play Loop
+            </button>
+            <button type="button" id="btn-clear-input" class="btn btn-secondary" tabindex="3" title="Clear input">
+              ✕
+            </button>
+          </form>
+          <div class="input-hint">Supports: youtube.com, youtu.be, shorts, embeds, and raw IDs</div>
+        </div>
+
+        <!-- Custom Controls Section (Visible when video is loaded) -->
+        <div class="card controls-card" id="custom-controls-card">
+          <h2>Now Playing Controls</h2>
+          <div class="control-toolbar">
+            <button id="ctrl-play" class="ctrl-btn" tabindex="4" title="Play / Pause">
+              <span class="icon">⏸</span>
+              <span class="label">Pause</span>
+            </button>
+            <button id="ctrl-mute" class="ctrl-btn" tabindex="5" title="Mute / Unmute">
+              <span class="icon">🔊</span>
+              <span class="label">Mute</span>
+            </button>
+            <button id="ctrl-loop" class="ctrl-btn active" tabindex="6" title="Toggle Loop">
+              <span class="icon">🔁</span>
+              <span class="label">Loop: ON</span>
+            </button>
+            <button id="ctrl-favorite" class="ctrl-btn" tabindex="7" title="Add to Favorites">
+              <span class="icon">☆</span>
+              <span class="label">Save</span>
+            </button>
+            <button id="ctrl-theater" class="ctrl-btn" tabindex="8" title="Fullscreen / Theater Mode">
+              <span class="icon">📺</span>
+              <span class="label">Theater</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Ambient Presets Section -->
+        <div class="card presets-card">
+          <h2>Ambient Presets</h2>
+          <div class="preset-grid" id="preset-grid">
+            <!-- Preset items will be statically placed or loaded -->
+            <button class="preset-item" data-id="L_LUpnjgPso" tabindex="9">
+              <div class="preset-thumbnail" style="background-image: url('https://img.youtube.com/vi/L_LUpnjgPso/hqdefault.jpg')"></div>
+              <span class="preset-title">🔥 Cozy Fireplace</span>
+            </button>
+            <button class="preset-item" data-id="q76bN0Gy6zo" tabindex="10">
+              <div class="preset-thumbnail" style="background-image: url('https://img.youtube.com/vi/q76bN0Gy6zo/hqdefault.jpg')"></div>
+              <span class="preset-title">🌧️ Rain on Window</span>
+            </button>
+            <button class="preset-item" data-id="jfKfPfyJRdk" tabindex="11">
+              <div class="preset-thumbnail" style="background-image: url('https://img.youtube.com/vi/jfKfPfyJRdk/hqdefault.jpg')"></div>
+              <span class="preset-title">☕ Lofi Hip Hop Cafe</span>
+            </button>
+            <button class="preset-item" data-id="hW1z7K7nFco" tabindex="12">
+              <div class="preset-thumbnail" style="background-image: url('https://img.youtube.com/vi/hW1z7K7nFco/hqdefault.jpg')"></div>
+              <span class="preset-title">🌊 Relaxing Ocean</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Favorites Section -->
+        <div class="card favorites-card" id="favorites-section">
+          <h2>My Favorites</h2>
+          <div class="collections-list" id="favorites-list">
+            <div class="empty-state">No favorites saved yet. Star a video to save it here!</div>
+          </div>
+        </div>
+
+        <!-- History Section -->
+        <div class="card history-card" id="history-section">
+          <div class="card-header-row">
+            <h2>Recent Loops</h2>
+            <button id="btn-clear-history" class="btn-text-only" tabindex="20">Clear History</button>
+          </div>
+          <div class="collections-list" id="history-list">
+            <div class="empty-state">No recently played loops.</div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Right Side: Video Player Container -->
+      <section class="player-panel" id="player-panel">
+        <div class="player-wrapper" id="player-wrapper">
+          <!-- The Iframe will embed here -->
+          <div id="youtube-player"></div>
+          
+          <!-- Large overlay when loading or no video -->
+          <div id="player-placeholder" class="player-placeholder">
+            <div class="placeholder-content">
+              <span class="placeholder-icon">📺</span>
+              <h3>No Video Playing</h3>
+              <p>Enter a YouTube URL or select an ambient preset below to start looping.</p>
+            </div>
+          </div>
+
+          <!-- Theater Mode HUD overlay (fades out in fullscreen, shows on keypress/remote action) -->
+          <div id="theater-hud" class="theater-hud">
+            <div class="hud-top">
+              <span class="hud-logo">🔁 LoopPlay</span>
+              <span id="hud-video-title" class="hud-video-title">Ambient Fireplace</span>
+            </div>
+            <div class="hud-bottom">
+              <div class="hud-controls">
+                <button id="hud-btn-play" class="hud-btn">⏸ Pause</button>
+                <button id="hud-btn-mute" class="hud-btn">🔊 Mute</button>
+                <button id="hud-btn-loop" class="hud-btn active">🔁 Loop: ON</button>
+                <button id="hud-btn-favorite" class="hud-btn">☆ Save</button>
+                <button id="hud-btn-exit" class="hud-btn danger">✕ Exit Fullscreen</button>
+              </div>
+              <div class="hud-hint">Press any arrow key to show controls. Press Back or Exit to go to dashboard.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- YouTube IFrame Player API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="app.js"></script>
+</body>
+</html>
