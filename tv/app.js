@@ -195,6 +195,9 @@ function playVideoById(videoId, customTitle) {
   
   // Activate Controls Card on dashboard
   document.body.classList.add('video-active');
+  
+  // Auto-fullscreen/Theater mode on play
+  enterTheaterMode();
 }
 
 // Create YouTube Player Instance
