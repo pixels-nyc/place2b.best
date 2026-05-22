@@ -17,6 +17,12 @@ window.addEventListener('DOMContentLoaded', () => {
   renderHistory();
   setupEventListeners();
   checkUrlParameters();
+
+  // Auto-focus the input field on load for TV remote friendliness
+  const urlInput = document.getElementById('video-url');
+  if (urlInput) {
+    urlInput.focus();
+  }
 });
 
 // Setup event listeners for UI buttons and keyboards
@@ -382,8 +388,8 @@ function exitTheaterMode() {
   if (hud) hud.classList.remove('hud-visible');
 
   setTimeout(() => {
-    const playSubmitBtn = document.getElementById('btn-play-submit');
-    if (playSubmitBtn) playSubmitBtn.focus();
+    const urlInput = document.getElementById('video-url');
+    if (urlInput) urlInput.focus();
   }, 100);
 }
 

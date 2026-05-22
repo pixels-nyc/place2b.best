@@ -681,8 +681,7 @@ body.theater-active .player-wrapper {
     overflow-y: auto;
   }
   .player-panel {
-    order: -1;
-    margin-bottom: 12px;
+    margin-bottom: 20px;
   }
   .dashboard-panel {
     overflow-y: visible;
