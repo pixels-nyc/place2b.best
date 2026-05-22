@@ -3,7 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Loopplay - YouTube Looper for TV</title>
+  <title>The B Spot - TV Player</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  
+  <!-- Open Graph / Sharing Meta Tags -->
+  <meta property="og:title" content="The B Spot - TV Player">
+  <meta property="og:description" content="Loop and play YouTube videos on repeat. Optimized for TV remotes and Fire Stick browsers.">
+  <meta property="og:image" content="https://place2b.best/tv/logo.png">
+  <meta property="og:url" content="https://place2b.best/tv/">
+  <meta property="og:type" content="website">
+
   <link rel="stylesheet" href="style.css">
   <!-- Google Fonts: Inter & Outfit for premium look -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,8 +28,7 @@
     <!-- Header -->
     <header class="app-header">
       <div class="logo-section">
-        <span class="logo-icon">🔁</span>
-        <h1 class="logo-text">Loop<span>Play</span></h1>
+        <img src="logo.png" alt="The B Spot Logo" class="logo-img">
         <span class="badge">TV Edition</span>
       </div>
       <div id="status-bar" class="status-bar">
@@ -133,7 +141,7 @@
           <!-- Theater Mode HUD overlay (fades out in fullscreen, shows on keypress/remote action) -->
           <div id="theater-hud" class="theater-hud">
             <div class="hud-top">
-              <span class="hud-logo">🔁 LoopPlay</span>
+              <span class="hud-logo">The B Spot</span>
               <span id="hud-video-title" class="hud-video-title">Ambient Loop</span>
             </div>
             <div class="hud-bottom">

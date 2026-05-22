@@ -91,21 +91,11 @@ body {
   gap: 12px;
 }
 
-.logo-icon {
-  font-size: 2rem;
-  line-height: 1;
-}
-
-.logo-text {
-  font-family: 'Outfit', sans-serif;
-  font-size: 2.2rem;
-  font-weight: 800;
-  color: var(--color-text-bright);
-  letter-spacing: -0.5px;
-}
-
-.logo-text span {
-  color: var(--color-secondary);
+.logo-img {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+  display: block;
 }
 
 .badge {
