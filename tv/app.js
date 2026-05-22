@@ -10,14 +10,6 @@ let lastInteractionTime = 0;
 let favorites = [];
 let historyList = [];
 
-// Statically defined details for presets to avoid relying on API details
-const presetTitles = {
-  'L_LUpnjgPso': '🔥 Cozy Fireplace',
-  'q76bN0Gy6zo': '🌧️ Rain on Window',
-  'jfKfPfyJRdk': '☕ Lofi Hip Hop Cafe',
-  'hW1z7K7nFco': '🌊 Relaxing Ocean'
-};
-
 // Initialize Application once DOM loads
 window.addEventListener('DOMContentLoaded', () => {
   loadCollections();
@@ -66,17 +58,6 @@ function setupEventListeners() {
   document.getElementById('hud-btn-loop').addEventListener('click', toggleLoop);
   document.getElementById('hud-btn-favorite').addEventListener('click', toggleFavoriteCurrent);
   document.getElementById('hud-btn-exit').addEventListener('click', exitTheaterMode);
-
-  // Preset Card click handlers
-  const presetItems = document.querySelectorAll('.preset-item');
-  presetItems.forEach(item => {
-    item.addEventListener('click', () => {
-      const id = item.getAttribute('data-id');
-      if (id) {
-        playVideoById(id, presetTitles[id] || 'Ambient Loop');
-      }
-    });
-  });
 
   // Spatial Navigation HUD trigger: Any keypress or mouse movement reveals HUD in theater mode
   document.addEventListener('keydown', handleGlobalKeydown);
@@ -167,7 +148,6 @@ function extractVideoId(urlOrId) {
   const match = urlOrId.match(regExp);
   return match ? match[1] : '';
 }
-
 
 // Form Submission handler
 function handleFormSubmit(e) {
@@ -269,7 +249,6 @@ function onPlayerStateChange(event) {
   if (event.data === YT.PlayerState.PLAYING) {
     updateStatusBar('playing', 'Looping Active');
     updateControlsUI();
-    // Fetch title if we don't have it
     updateCurrentVideoTitle();
   }
   
@@ -383,7 +362,6 @@ function updateControlsUI() {
 function enterTheaterMode() {
   document.body.classList.add('theater-active');
   triggerHudReveal();
-  // Focus the Play button in the HUD to start user focus flow
   setTimeout(() => {
     const playBtn = document.getElementById('hud-btn-play');
     if (playBtn) playBtn.focus();
@@ -394,14 +372,12 @@ function enterTheaterMode() {
 function exitTheaterMode() {
   document.body.classList.remove('theater-active');
   
-  // Clean HUD timeouts
   if (hudTimeoutId) {
     clearTimeout(hudTimeoutId);
   }
   const hud = document.getElementById('theater-hud');
   if (hud) hud.classList.remove('hud-visible');
 
-  // Focus dashboard play button
   setTimeout(() => {
     const playSubmitBtn = document.getElementById('btn-play-submit');
     if (playSubmitBtn) playSubmitBtn.focus();
@@ -415,17 +391,14 @@ function triggerHudReveal() {
 
   hud.classList.add('hud-visible');
   
-  // Reset existing fade timers
   if (hudTimeoutId) {
     clearTimeout(hudTimeoutId);
   }
 
-  // Set timeout to hide unless user is focusing inside
   startHudTimer();
 }
 
 function startHudTimer() {
-  // If focus is currently inside HUD, don't auto-fade it
   const activeEl = document.activeElement;
   const hud = document.getElementById('theater-hud');
   if (hud && hud.contains(activeEl)) {
@@ -436,7 +409,7 @@ function startHudTimer() {
     if (hud) {
       hud.classList.remove('hud-visible');
     }
-  }, 4000); // 4 seconds of idle -> hide
+  }, 4000);
 }
 
 // LocalStorage: Load favorites and history
@@ -456,13 +429,9 @@ function loadCollections() {
 
 // LocalStorage: Add new item to History
 function addToHistory(id, title) {
-  // Remove duplicate if it exists
   historyList = historyList.filter(item => item.id !== id);
-  
-  // Insert at front
   historyList.unshift({ id: id, title: title });
   
-  // Cap at 10 items
   if (historyList.length > 10) {
     historyList.pop();
   }
@@ -493,10 +462,8 @@ function toggleFavoriteCurrent() {
   
   const index = favorites.findIndex(item => item.id === currentVideoId);
   if (index >= 0) {
-    // Remove
     favorites.splice(index, 1);
   } else {
-    // Add
     let title = currentVideoId;
     if (player && typeof player.getVideoData === 'function') {
       const data = player.getVideoData();
@@ -530,7 +497,6 @@ function saveFavorites() {
 function updateTitleInStorage(id, newTitle) {
   let updated = false;
 
-  // Update in History
   historyList.forEach(item => {
     if (item.id === id && item.title !== newTitle) {
       item.title = newTitle;
@@ -538,7 +504,6 @@ function updateTitleInStorage(id, newTitle) {
     }
   });
 
-  // Update in Favorites
   favorites.forEach(item => {
     if (item.id === id && item.title !== newTitle) {
       item.title = newTitle;
@@ -629,7 +594,6 @@ function renderHistory() {
   }
 
   listEl.innerHTML = '';
-  // Start tab index for history after favorites. Standard list max is 10.
   const historyStartIndex = 35;
   historyList.forEach((item, index) => {
     const btn = document.createElement('button');

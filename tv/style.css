@@ -263,7 +263,6 @@ body {
 
 /* Spatial Focus Rules (Crucial for TV Remote D-pad) */
 .btn:focus,
-.preset-item:focus,
 .ctrl-btn:focus,
 .collection-item:focus,
 #btn-clear-history:focus,
@@ -375,49 +374,6 @@ body.video-active .controls-card {
   background-color: rgba(6, 182, 212, 0.15);
   border-color: rgba(6, 182, 212, 0.4);
   color: var(--color-secondary);
-}
-
-/* Ambient Presets Grid */
-.preset-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
-
-.preset-item {
-  display: flex;
-  flex-direction: column;
-  background-color: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: var(--border-radius-sm);
-  overflow: hidden;
-  cursor: pointer;
-  text-align: left;
-  transition: var(--transition-smooth);
-}
-
-.preset-thumbnail {
-  width: 100%;
-  height: 85px;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0.75;
-  transition: var(--transition-smooth);
-}
-
-.preset-item:hover .preset-thumbnail {
-  opacity: 0.95;
-}
-
-.preset-title {
-  padding: 8px 10px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--color-text-bright);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 /* Lists and Collections (History and Favorites) */
