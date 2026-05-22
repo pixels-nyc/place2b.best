@@ -122,18 +122,52 @@ function handleGlobalKeydown(e) {
 function extractVideoId(urlOrId) {
   if (!urlOrId) return '';
   urlOrId = urlOrId.trim();
-  
-  // Standard 11 character ID check
+
+  // 1. Check if it's already a clean 11-char ID
   if (urlOrId.length === 11 && /^[a-zA-Z0-9_-]{11}$/.test(urlOrId)) {
     return urlOrId;
   }
 
-  // Regex patterns for various YouTube formats
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=||shorts\/)([^#\&\?]*).*/;
-  const match = urlOrId.match(regExp);
+  // 2. Try to parse as URL
+  try {
+    let urlString = urlOrId;
+    // Add protocol if missing to allow URL parser to work
+    if (!/^https?:\/\//i.test(urlString)) {
+      urlString = 'https://' + urlString;
+    }
+    const parsedUrl = new URL(urlString);
+    const host = parsedUrl.hostname.toLowerCase();
+    
+    if (host.includes('youtu.be')) {
+      const path = parsedUrl.pathname.substring(1);
+      return path.split('/')[0].split('?')[0].substring(0, 11);
+    }
+    
+    if (host.includes('youtube.com')) {
+      const pathParts = parsedUrl.pathname.split('/');
+      
+      // Check paths like /shorts/ID, /embed/ID, /v/ID, /live/ID
+      const triggerIndex = pathParts.findIndex(p => p === 'shorts' || p === 'embed' || p === 'v' || p === 'live');
+      if (triggerIndex !== -1 && triggerIndex + 1 < pathParts.length) {
+        return pathParts[triggerIndex + 1].substring(0, 11);
+      }
+      
+      // Standard /watch?v=ID
+      const vParam = parsedUrl.searchParams.get('v');
+      if (vParam) {
+        return vParam.substring(0, 11);
+      }
+    }
+  } catch (e) {
+    // Fall back to robust regex if URL parsing fails
+  }
 
-  return (match && match[2].length === 11) ? match[2] : '';
+  // Robust regex fallback
+  const regExp = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+  const match = urlOrId.match(regExp);
+  return match ? match[1] : '';
 }
+
 
 // Form Submission handler
 function handleFormSubmit(e) {
